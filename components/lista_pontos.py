@@ -1,3 +1,6 @@
+import streamlit as st  # ADICIONE ESTA LINHA
+from services.ponto_coleta_service import PontoColetaService
+
 def exibir_lista_pontos(service):
     """Exibe a lista de pontos de coleta usando a instância do service"""
     pontos = service.listar_pontos_coleta()
