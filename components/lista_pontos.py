@@ -1,37 +1,32 @@
-import streamlit as st
-from services.ponto_coleta_service import PontoColetaService
-
-def exibir_lista_pontos():
-    service = PontoColetaService()  # Criar instância
-    pontos = service.listar_pontos_coleta()  # Chamar método da instância
-    
+def exibir_lista_pontos(service):
+    """Exibe a lista de pontos de coleta usando a instância do service"""
+    pontos = service.listar_pontos_coleta()
     
     if not pontos:
-        st.info("Nenhum ponto de coleta cadastrado.")
+        st.info("Nenhum ponto de coleta cadastrado ainda.")
         return
     
     for ponto in pontos:
-        with st.container():
-            col1, col2, col3 = st.columns([3, 1, 1])
+        with st.expander(f"🗑️ {ponto.nome} - {ponto.cidade}/{ponto.estado}"):
+            col1, col2 = st.columns(2)
             
             with col1:
-                st.subheader(ponto.nome)
-                st.write(f"**Endereço:** {ponto.endereco}, {ponto.cidade} - {ponto.estado}")
-                if ponto.telefone:
-                    st.write(f"**Telefone:** {ponto.telefone}")
-                if ponto.horario_funcionamento:
-                    st.write(f"**Horário:** {ponto.horario_funcionamento}")
-                if ponto.tipos_materiais:
-                    st.write(f"**Materiais aceitos:** {ponto.tipos_materiais}")
+                st.write(f"**Endereço:** {ponto.endereco}")
+                st.write(f"**Cidade:** {ponto.cidade}")
+                st.write(f"**Estado:** {ponto.estado}")
+                st.write(f"**Telefone:** {ponto.telefone}")
             
             with col2:
-                if st.button("✏️ Editar", key=f"edit_{ponto.id}"):
-                    st.session_state.editar_ponto_id = ponto.id
-                    st.rerun()
+                st.write(f"**Horário:** {ponto.horario_funcionamento}")
+                st.write(f"**Materiais:** {ponto.tipos_materiais}")
+                if ponto.data_criacao:
+                    st.write(f"**Cadastrado em:** {ponto.data_criacao}")
             
-            with col3:
-                if st.button("🗑️ Excluir", key=f"del_{ponto.id}"):
-                    st.session_state.excluir_ponto_id = ponto.id
+            # Botão para excluir
+            if st.button(f"Excluir {ponto.nome}", key=ponto.id):
+                try:
+                    service.excluir_ponto(ponto.id)
+                    st.success(f"Ponto '{ponto.nome}' excluído com sucesso!")
                     st.rerun()
-            
-            st.divider()
+                except Exception as e:
+                    st.error(f"Erro ao excluir ponto: {e}")
