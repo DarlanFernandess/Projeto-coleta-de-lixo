@@ -99,7 +99,7 @@ nome	Text	✅	Nome do local
 endereco	Text	✅	Endereço completo
 cidade	Text	✅	Cidade
 estado	Text	✅	Estado
-telefone	Text	❌	Telefone para contato
+telefone	Text	✅	Telefone para contato
 horario_funcionamento	Text	✅	Horário de funcionamento
 tipos_materiais	Text	✅	Tipos de materiais aceitos
 data_criacao	Timestamp	✅	Data de cadastro
