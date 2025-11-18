@@ -12,11 +12,18 @@ class PontoColeta:
         self.horario_funcionamento = horario_funcionamento
         self.tipos_materiais = tipos_materiais
 
+
+def get_connection():
+    """
+    Retorna uma conexão com o banco de dados SQLite
+    """
+    return sqlite3.connect('pontos_coleta.db')
+
 def criar_tabela():
     """
     Cria a tabela de pontos de coleta se não existir
     """
-    conn = sqlite3.connect('pontos_coleta.db')
+    conn = get_connection()
     cursor = conn.cursor()
     
     cursor.execute('''
