@@ -6,10 +6,10 @@ from database.models import PontoColeta
 class PontoColetaService:
     
     def adicionar_ponto(self, ponto):
+        """Adiciona um novo ponto de coleta (alias para criar_ponto_coleta)"""
         conn = get_connection()
         cursor = conn.cursor()
         
-        # Adicionar data atual automaticamente
         data_atual = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         
         cursor.execute('''
@@ -23,6 +23,10 @@ class PontoColetaService:
         ponto.id = cursor.lastrowid
         conn.close()
         return ponto
+    
+    def criar_ponto_coleta(self, ponto):
+        """Alias para adicionar_ponto - mantém compatibilidade"""
+        return self.adicionar_ponto(ponto)
     
     def listar_pontos_coleta(self):
         """Lista todos os pontos de coleta"""
@@ -56,7 +60,6 @@ class PontoColetaService:
         
         return pontos
     
-    # Adicione outros métodos necessários...
     def buscar_por_id(self, id):
         """Busca um ponto de coleta pelo ID"""
         conn = get_connection()
@@ -88,3 +91,4 @@ class PontoColetaService:
         cursor.execute('DELETE FROM pontos_coleta WHERE id = ?', (id,))
         conn.commit()
         conn.close()
+        return True

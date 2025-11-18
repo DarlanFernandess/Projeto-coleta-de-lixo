@@ -14,6 +14,9 @@ st.set_page_config(
 # Inicializar banco de dados
 criar_tabela()
 
+# Criar instância do serviço
+service = PontoColetaService()
+
 # Inicializar variáveis de sessão
 if 'editar_ponto_id' not in st.session_state:
     st.session_state.editar_ponto_id = None
