@@ -2,8 +2,9 @@ import streamlit as st
 from services.ponto_coleta_service import PontoColetaService
 
 def exibir_lista_pontos():
-    """Componente para exibir a lista de pontos de coleta"""
-    pontos = PontoColetaService.listar_pontos_coleta()
+    service = PontoColetaService()  # Criar instância
+    pontos = service.listar_pontos_coleta()  # Chamar método da instância
+    
     
     if not pontos:
         st.info("Nenhum ponto de coleta cadastrado.")
