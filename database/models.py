@@ -1,30 +1,38 @@
-import sqlite3
-import streamlit as st
-from datetime import datetime
-
-def criar_tabela():
-    """Cria a tabela de pontos de coleta se não existir"""
-    conn = sqlite3.connect('pontos_coleta.db')
-    cursor = conn.cursor()
+class PontoColeta:
+    def __init__(self, id=None, nome=None, endereco=None, cidade=None, estado=None,
+                 telefone=None, horario_funcionamento=None, tipos_materiais=None):
+        self.id = id
+        self.nome = nome
+        self.endereco = endereco
+        self.cidade = cidade
+        self.estado = estado
+        self.telefone = telefone
+        self.horario_funcionamento = horario_funcionamento
+        self.tipos_materiais = tipos_materiais
     
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS pontos_coleta (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome TEXT NOT NULL,
-            endereco TEXT NOT NULL,
-            cidade TEXT NOT NULL,
-            estado TEXT NOT NULL,
-            telefone TEXT,
-            horario_funcionamento TEXT,
-            tipos_materiais TEXT,
-            data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            data_atualizacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    def to_dict(self):
+        """Converte o objeto para dicionário"""
+        return {
+            'id': self.id,
+            'nome': self.nome,
+            'endereco': self.endereco,
+            'cidade': self.cidade,
+            'estado': self.estado,
+            'telefone': self.telefone,
+            'horario_funcionamento': self.horario_funcionamento,
+            'tipos_materiais': self.tipos_materiais
+        }
+    
+    @classmethod
+    def from_dict(cls, data):
+        """Cria um objeto PontoColeta a partir de um dicionário"""
+        return cls(
+            id=data.get('id'),
+            nome=data.get('nome'),
+            endereco=data.get('endereco'),
+            cidade=data.get('cidade'),
+            estado=data.get('estado'),
+            telefone=data.get('telefone'),
+            horario_funcionamento=data.get('horario_funcionamento'),
+            tipos_materiais=data.get('tipos_materiais')
         )
-    ''')
-    
-    conn.commit()
-    conn.close()
-
-def get_connection():
-    """Retorna uma conexão com o banco de dados"""
-    return sqlite3.connect('pontos_coleta.db')
