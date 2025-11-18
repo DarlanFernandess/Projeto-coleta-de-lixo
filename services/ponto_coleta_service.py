@@ -92,3 +92,21 @@ class PontoColetaService:
         conn.commit()
         conn.close()
         return True
+    
+    def atualizar_ponto(self, ponto):
+    """Atualiza um ponto de coleta existente"""
+    conn = get_connection()
+    cursor = conn.cursor()
+    
+    cursor.execute('''
+        UPDATE pontos_coleta 
+        SET nome = ?, endereco = ?, cidade = ?, estado = ?, 
+            telefone = ?, horario_funcionamento = ?, tipos_materiais = ?
+        WHERE id = ?
+    ''', (ponto.nome, ponto.endereco, ponto.cidade, ponto.estado,
+          ponto.telefone, ponto.horario_funcionamento, ponto.tipos_materiais,
+          ponto.id))
+    
+    conn.commit()
+    conn.close()
+    return ponto
