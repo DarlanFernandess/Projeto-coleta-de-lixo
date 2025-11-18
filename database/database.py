@@ -27,19 +27,31 @@ def criar_tabela():
     conn = get_connection()
     cursor = conn.cursor()
     
+    # Criar tabela com a coluna data_criacao
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS pontos_coleta (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    nome TEXT NOT NULL,
-    endereco TEXT NOT NULL,
-    cidade TEXT NOT NULL,
-    estado TEXT NOT NULL,
-    telefone TEXT,
-    horario_funcionamento TEXT NOT NULL,
-    tipos_materiais TEXT NOT NULL,
-    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT NOT NULL,
+            endereco TEXT NOT NULL,
+            cidade TEXT NOT NULL,
+            estado TEXT NOT NULL,
+            telefone TEXT,
+            horario_funcionamento TEXT NOT NULL,
+            tipos_materiais TEXT NOT NULL,
+            data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
     ''')
+    
+    # Verificar se a coluna data_criacao existe, se não, adicionar
+    cursor.execute("PRAGMA table_info(pontos_coleta)")
+    columns = [column[1] for column in cursor.fetchall()]
+    
+    if 'data_criacao' not in columns:
+        cursor.execute('''
+            ALTER TABLE pontos_coleta 
+            ADD COLUMN data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        ''')
+        print("Coluna 'data_criacao' adicionada à tabela!")
     
     conn.commit()
     conn.close()
