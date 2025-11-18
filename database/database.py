@@ -12,7 +12,7 @@ class PontoColeta:
         self.horario_funcionamento = horario_funcionamento
         self.tipos_materiais = tipos_materiais
 
-# ⬇️⬇️⬇️ ADICIONE ESTAS FUNÇÕES ⬇️⬇️⬇️
+
 
 def get_connection():
     """
@@ -29,15 +29,16 @@ def criar_tabela():
     
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS pontos_coleta (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome TEXT NOT NULL,
-            endereco TEXT NOT NULL,
-            cidade TEXT NOT NULL,
-            estado TEXT NOT NULL,
-            telefone TEXT,
-            horario_funcionamento TEXT NOT NULL,
-            tipos_materiais TEXT NOT NULL
-        )
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT NOT NULL,
+    endereco TEXT NOT NULL,
+    cidade TEXT NOT NULL,
+    estado TEXT NOT NULL,
+    telefone TEXT,
+    horario_funcionamento TEXT NOT NULL,
+    tipos_materiais TEXT NOT NULL,
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
     ''')
     
     conn.commit()
