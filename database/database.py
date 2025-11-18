@@ -38,7 +38,7 @@ def criar_tabela():
             telefone TEXT,
             horario_funcionamento TEXT NOT NULL,
             tipos_materiais TEXT NOT NULL,
-            data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            data_criacao TEXT
         )
     ''')
     
@@ -49,7 +49,7 @@ def criar_tabela():
     if 'data_criacao' not in columns:
         cursor.execute('''
             ALTER TABLE pontos_coleta 
-            ADD COLUMN data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            ADD COLUMN data_criacao TEXT
         ''')
         print("Coluna 'data_criacao' adicionada à tabela!")
     
