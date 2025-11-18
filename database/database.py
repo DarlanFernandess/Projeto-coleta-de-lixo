@@ -1,3 +1,5 @@
+import sqlite3
+
 class PontoColeta:
     def __init__(self, id=None, nome=None, endereco=None, cidade=None, estado=None,
                  telefone=None, horario_funcionamento=None, tipos_materiais=None):
@@ -9,30 +11,35 @@ class PontoColeta:
         self.telefone = telefone
         self.horario_funcionamento = horario_funcionamento
         self.tipos_materiais = tipos_materiais
+
+# ⬇️⬇️⬇️ ADICIONE ESTAS FUNÇÕES ⬇️⬇️⬇️
+
+def get_connection():
+    """
+    Retorna uma conexão com o banco de dados SQLite
+    """
+    return sqlite3.connect('pontos_coleta.db')
+
+def criar_tabela():
+    """
+    Cria a tabela de pontos de coleta se não existir
+    """
+    conn = get_connection()
+    cursor = conn.cursor()
     
-    def to_dict(self):
-        """Converte o objeto para dicionário"""
-        return {
-            'id': self.id,
-            'nome': self.nome,
-            'endereco': self.endereco,
-            'cidade': self.cidade,
-            'estado': self.estado,
-            'telefone': self.telefone,
-            'horario_funcionamento': self.horario_funcionamento,
-            'tipos_materiais': self.tipos_materiais
-        }
-    
-    @classmethod
-    def from_dict(cls, data):
-        """Cria um objeto PontoColeta a partir de um dicionário"""
-        return cls(
-            id=data.get('id'),
-            nome=data.get('nome'),
-            endereco=data.get('endereco'),
-            cidade=data.get('cidade'),
-            estado=data.get('estado'),
-            telefone=data.get('telefone'),
-            horario_funcionamento=data.get('horario_funcionamento'),
-            tipos_materiais=data.get('tipos_materiais')
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS pontos_coleta (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT NOT NULL,
+            endereco TEXT NOT NULL,
+            cidade TEXT NOT NULL,
+            estado TEXT NOT NULL,
+            telefone TEXT,
+            horario_funcionamento TEXT NOT NULL,
+            tipos_materiais TEXT NOT NULL
         )
+    ''')
+    
+    conn.commit()
+    conn.close()
+    print("Tabela 'pontos_coleta' criada/verificada com sucesso!")
